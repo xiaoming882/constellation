@@ -7,7 +7,7 @@
 
 ## ✨ 在线体验
 
-👉 **[点击打开](https://xiaoming882.github.io/constellation/)**
+👉 **[点击打开](https://github.com/xiaoming882/constellation)**
 
 ---
 
