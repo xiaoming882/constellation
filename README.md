@@ -9,8 +9,6 @@
 
 👉 **[点击打开](https://xiaoming882.github.io/constellation/)**
 
-（部署成功后可用，若打不开说明 Pages 还没开启）
-
 ---
 
 ## 🎮 玩法
