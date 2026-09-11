@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#060a16">
+  <title>粒子星座 · Particle Constellation (Beta)</title>
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <canvas id="scene"></canvas>
+
+  <header class="hud">
+    <h1>粒子星座 <span class="hud__beta">BETA</span></h1>
+    <p>移动鼠标 / 手指 · 点击炸开 · 与粒子互动</p>
+  </header>
+
+  <div id="fps" class="fps">-- FPS</div>
+
+  <aside class="panel" id="panel">
+    <div class="panel__header">
+      <span class="panel__title">控制面板</span>
+      <button class="panel__toggle" id="panelToggle" type="button" aria-label="收起或展开菜单">
+        <span class="panel__toggle-icon">▾</span>
+      </button>
+    </div>
+
+    <div class="panel__body">
+      <div class="field">
+        <span class="field__label">场景模式</span>
+        <div class="scenes">
+          <button class="scene-btn active" data-scene="nebula" type="button">星云</button>
+          <button class="scene-btn" data-scene="storm" type="button">风暴</button>
+          <button class="scene-btn" data-scene="wormhole" type="button">虫洞</button>
+          <button class="scene-btn" data-scene="firefly" type="button">萤火虫</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field__label">形状模式</span>
+        <div class="shapes">
+          <button class="shape-btn active" data-shape="free" type="button">自由</button>
+          <button class="shape-btn" data-shape="heart" type="button">爱心</button>
+          <button class="shape-btn" data-shape="fireworks" type="button">烟花</button>
+          <button class="shape-btn shape-btn--add" id="customAddBtn" type="button">＋ 画一个</button>
+        </div>
+        <div class="shapes" id="customShapesRow"></div>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="count">粒子数量 <b id="countVal">130</b></label>
+        <input type="range" id="count" min="20" max="260" step="10" value="130">
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="link">连线距离 <b id="linkVal">130</b></label>
+        <input type="range" id="link" min="60" max="240" step="10" value="130">
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="speed">运动速度 <b id="speedVal">1.0x</b></label>
+        <input type="range" id="speed" min="0" max="220" step="5" value="100">
+      </div>
+
+      <div class="field">
+        <span class="field__label">配色主题</span>
+        <div class="themes">
+          <button class="theme-btn active" data-hue="200" aria-label="冰蓝"></button>
+          <button class="theme-btn" data-hue="280" aria-label="紫罗兰"></button>
+          <button class="theme-btn" data-hue="330" aria-label="霓虹粉"></button>
+          <button class="theme-btn" data-hue="45" aria-label="暖金"></button>
+        </div>
+      </div>
+
+      <button class="feedback-btn" id="feedbackBtn" type="button">
+        <span>反馈</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="notice" id="notice" hidden>
+    <div class="notice__card" role="dialog" aria-modal="true" aria-labelledby="noticeTitle">
+      <button class="notice__close" id="noticeClose" type="button" aria-label="关闭公告">×</button>
+
+      <div class="notice__head">
+        <span class="notice__tag">公告</span>
+        <span class="notice__beta">BETA</span>
+        <span class="notice__date">2026-09-11</span>
+      </div>
+
+      <h2 class="notice__title" id="noticeTitle">欢迎来到粒子星座</h2>
+
+      <div class="notice__body">
+        <p>当前为 <b>Beta 测试版</b>，功能还在打磨中，可能存在卡顿或异常，欢迎体验并反馈。</p>
+        <p>一片会呼吸的星空，试试这些小玩法：</p>
+        <ul>
+          <li><b>点击炸开</b> —— 点/按屏幕任意位置，粒子像烟花一样散开</li>
+          <li><b>切换场景</b> —— 星云、风暴、虫洞、萤火虫四种氛围</li>
+          <li><b>切换形状</b> —— 自由、爱心、烟花，还能自己画</li>
+          <li><b>信号脉冲</b> —— 粒子之间会像神经元一样"放电"</li>
+          <li><b>收起面板</b> —— 点面板顶部按钮，可收起菜单享受纯视觉</li>
+        </ul>
+        <p class="notice__log">v2.3-beta · 新增自定义形状持久化与笔画开关<br>v2.0-beta · 新增形状切换与信号脉冲<br>v1.8-beta · 新增反馈弹窗<br>v1.7-beta · 新增 iOS 检测<br>v1.6-beta · 新增面板收起<br>v1.5-beta · 新增反馈入口<br>v1.4-beta · 新增禁止复制与选择<br>v1.3-beta · 新增点击炸开与场景模式<br>v1.2 · 公告每次进入都会显示<br>v1.1 · 新增帧率显示<br>v1.0 · 粒子星座上线</p>
+      </div>
+
+      <div class="notice__foot">
+        <button class="notice__ok" id="noticeOk" type="button">开始体验</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="feedback" id="feedback" hidden>
+    <div class="feedback__card" role="dialog" aria-modal="true">
+      <button class="feedback__close" id="feedbackClose" type="button" aria-label="关闭">×</button>
+      <h2 class="feedback__title">反馈</h2>
+      <p class="feedback__desc">写下你的想法、问题或建议，点「复制反馈」后粘贴发给我。</p>
+      <textarea class="feedback__input" id="feedbackInput" placeholder="说点什么……" rows="5"></textarea>
+      <div class="feedback__meta" id="feedbackMeta"></div>
+      <div class="feedback__foot">
+        <button class="feedback__btn feedback__btn--ghost" id="feedbackCancel" type="button">取消</button>
+        <button class="feedback__btn feedback__btn--ok" id="feedbackCopy" type="button">复制反馈</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ios-block" id="iosBlock" hidden>
+    <div class="ios-block__card">
+      <div class="ios-block__icon">iOS</div>
+      <h2 class="ios-block__title">暂未支持</h2>
+      <p class="ios-block__desc">
+        当前版本为 Beta 测试版，暂未对 iOS 设备进行适配。<br>
+        请使用 Android 或桌面端浏览器访问，<br>
+        iOS 版本正在适配中，敬请期待。
+      </p>
+      <button class="ios-block__ok" id="iosBlockOk" type="button">我知道了</button>
+    </div>
+  </div>
+
+  <!-- 画板 -->
+  <div class="drawpad" id="drawpad" hidden>
+    <canvas class="drawpad__canvas" id="drawpadCanvas"></canvas>
+    <div class="drawpad__bar">
+      <div class="drawpad__hint">在屏幕上画一个形状，画完点「完成」</div>
+      <div class="drawpad__toggle">
+        <span>笔画连成一条</span>
+        <label class="switch">
+          <input type="checkbox" id="drawpadConnect">
+          <span class="switch__slider"></span>
+        </label>
+      </div>
+      <div class="drawpad__actions">
+        <button class="drawpad__btn drawpad__btn--ghost" id="drawpadClear" type="button">清空</button>
+        <button class="drawpad__btn drawpad__btn--ghost" id="drawpadCancel" type="button">取消</button>
+        <button class="drawpad__btn drawpad__btn--ok" id="drawpadDone" type="button">完成</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 删除确认 -->
+  <div class="confirm" id="confirmDialog" hidden>
+    <div class="confirm__card">
+      <h3 class="confirm__title">删除这个形状？</h3>
+      <p class="confirm__desc" id="confirmShapeName">删除后不可恢复</p>
+      <div class="confirm__actions">
+        <button class="confirm__btn confirm__btn--ghost" id="confirmCancel" type="button">取消</button>
+        <button class="confirm__btn confirm__btn--danger" id="confirmOk" type="button">删除</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
